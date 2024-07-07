@@ -7,13 +7,12 @@ const App = () => {
 
   const handleAdditem = (event) => {
     event.preventDefault();
-    setItems((prevItems) => [...prevItems, newItem]);
-    console.log(items);
+    setItems(() => [...items, newItem]);
     setNewItem("");
   };
-  const handleDeleteItem = (event) => {
-    event.preventDefault();
-    alert();
+  const handleDeleteItem = (index) => {
+    setItems(()=>items.filter((item,i)=>i!==index))
+    alert('Item deleted')
   };
 //complete
   return (
@@ -34,14 +33,14 @@ const App = () => {
       </form>
       <h1 className="header">Todo-Application</h1>
       <ul className="list">
-        {items.map((item, index) => (
-          <li key="item">
+        {items.map((itemCreated, index) => (
+          <li key={itemCreated}>
             <label>
-              {item}
+              {itemCreated}
               <button
                 className="btn btn-danger"
                 type="submit"
-                onClick={handleDeleteItem}
+                onClick={()=>{handleDeleteItem(index)}}
               >
                 Delete
               </button>
