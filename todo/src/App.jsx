@@ -7,14 +7,26 @@ const App = () => {
 
   const handleAdditem = (event) => {
     event.preventDefault();
-    setItems(() => [...items, newItem]);
+    setItems(() => [...items, {id:crypto.randomUUID(),title:newItem,checked:false}]);
     setNewItem("");
   };
+
+
   const handleDeleteItem = (index) => {
-    setItems(()=>items.filter((item,i)=>i!==index))
+    setItems(()=>items.filter((item)=>item.id!==index))
     alert('Item deleted')
   };
-//complete
+
+  const toggleTodo=(id,checked)=>{
+    setItems(()=>items.map((item)=>{
+      if(item.id===id){
+        return {...item,checked}
+      }
+      return item
+    }))
+  };
+
+
   return (
     <>
       <form className="new-item-form">
@@ -33,14 +45,15 @@ const App = () => {
       </form>
       <h1 className="header">Todo-Application</h1>
       <ul className="list">
-        {items.map((itemCreated, index) => (
-          <li key={itemCreated}>
+        {items.map((item) => (
+          <li key={item.id}>
             <label>
-              {itemCreated}
+              {item.title}
+              <input type='checkbox' checked={item.checked} onChange={(e)=>{toggleTodo(item.id,e.target.checked)}}></input>
               <button
                 className="btn btn-danger"
-                type="submit"
-                onClick={()=>{handleDeleteItem(index)}}
+                text="submit"
+                onClick={()=>{handleDeleteItem(item.id)}}
               >
                 Delete
               </button>
